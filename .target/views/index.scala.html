@@ -1,7 +1,0 @@
-@(message: String) @main("Welcome to Play") {
-<div class='container-fluid' ng-controller="TypeaheadCtrl">
-	<pre>Model: {{selected| json}}</pre>
-	<input type="text" ng-model="selected"
-		typeahead="movie for movie in getMovies($viewValue)  | limitTo:8">
-</div>
-}
