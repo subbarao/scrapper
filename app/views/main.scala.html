@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html xmlns:ng="http://angularjs.org" id="ng-app" ng-app="checkMovies">
 <head>
 <title>@title</title>
 <link rel='stylesheet'
@@ -10,6 +10,7 @@
 
 <script type='text/javascript'
 	src='@routes.WebJarAssets.at(WebJarAssets.locate("angular.min.js"))'>
+	
 </script>
 
 <script type='text/javascript'
@@ -20,7 +21,16 @@
 	src='@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap.min.js"))'>
 	
 </script>
-
+<script type='text/javascript'
+	src='@routes.WebJarAssets.at(WebJarAssets.locate("ui-bootstrap.min.js"))'>
+	
+</script>
+<script type='text/javascript'
+	src='@routes.WebJarAssets.at(WebJarAssets.locate("ui-bootstrap-tpls.js"))'>
+	
+</script>
+<script src='@routes.Assets.at("javascripts/todo.js")'
+	type="text/javascript"></script>
 </head>
 <body>
 
@@ -46,7 +56,7 @@
 			</div>
 		</div>
 	</div>
-
+	
 	<div class="container">@content</div>
-	</body>
+</body>
 </html>

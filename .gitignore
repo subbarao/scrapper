@@ -15,4 +15,4 @@ dist
 /.settings
 bower_components/
 .target
-bin
+bin/
