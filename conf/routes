@@ -4,7 +4,7 @@
 
 # Home page
 GET     /                           controllers.Application.index
-GET     /movies/autocomplete        controllers.Movies.index
+GET     /movies/autocomplete        controllers.Movies.index(name: Option[String])
 
 GET     /webjars/*file                    controllers.WebJarAssets.at(file)
 # Map static resources from the /public folder to the /assets URL path

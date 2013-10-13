@@ -4,7 +4,9 @@ import scala.collection.mutable.HashMap
 
 trait Search {
   def parse: HashMap[String, String]
-  def findByName(search: String) = {
-    parse.keySet.filter(_.startsWith(search)).map(parse.get)
+  def findByName(search: String): Array[String] = {
+		println(search)
+    parse.keySet.filter(_.startsWith(search)).toArray
+
   }
 }
