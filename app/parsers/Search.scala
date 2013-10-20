@@ -1,12 +1,18 @@
 package parsers
 
 import scala.collection.mutable.HashMap
+import akka.actor.Actor
+import play.api.Logger
 
-trait Search {
+trait Search extends Actor {
   def parse: HashMap[String, String]
   def findByName(search: String): Array[String] = {
-		println(search)
-    parse.keySet.filter(_.startsWith(search)).toArray
-
+    parse.keySet.filter(_.matches("(?i:.*" + search + ".*)")).toArray
+  }
+  def receive = {
+    case movie: String =>
+      sender ! this.findByName(movie)
+    case _ =>
+      sender ! Array("")
   }
 }
