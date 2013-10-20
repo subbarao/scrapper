@@ -16,7 +16,9 @@ object Application extends Controller {
 class Global extends GlobalSettings {
   @Override
   def onStart(app: Application) {
+    parsers.ManatelgumoviesParser.instance ! "d"
   }
+  
   @Override
   def onStop(app: Application) {
   }

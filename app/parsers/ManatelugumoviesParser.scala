@@ -1,30 +1,35 @@
 package parsers
 
+import scala.annotation.implicitNotFound
+import scala.collection.JavaConversions.asScalaBuffer
 import scala.collection.mutable.HashMap
-import org.jsoup.Jsoup
-import play.api.Logger
-import play.libs.Akka
-import akka.actor.Props
-import akka.actor.Actor
-import scala.concurrent.ExecutionContext
+import scala.concurrent.Await
+import scala.concurrent.Future
+import scala.concurrent.duration.DurationInt
 
+import org.jsoup.Jsoup
+
+import akka.actor.Props
+import play.libs.Akka
 class ManatelgumoviesParser extends Search {
-  private var allLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-  val url = "http://www.tube.manatelugumovies.net/search/label/A?max-results=1000"
+
+  private var allLetters = 'A' to 'Z'
+
+  implicit val ec = akka.dispatch.ExecutionContexts.global
+
   lazy val parse = {
-    val allMovies = new HashMap[String, String]
-    for (letter <- this.allLetters.iterator; iter = getMoviesIterator(letter)) {
-      while (iter.hasNext) {
-        val element = iter.next
-        val link = element.select("a").first
-        allMovies.put(link.text, link.attr("href"))
-      }
-    }
-    allMovies
+    var futureSum = Future.fold(allLetters.map(extractMovies))(new HashMap[String, String])({ _ ++ _ })
+    Await.result(futureSum, 7 seconds)
   }
 
-  private def getMoviesIterator(c: Char) = {
-    Jsoup.connect("http://www.tube.manatelugumovies.net/search/label/" + c + "?max-results=1000").get.select(".post-body.entry-content").iterator
+  private def extractMovies(c: Char): Future[HashMap[String, String]] = Future {
+    Jsoup.
+      connect("http://www.tube.manatelugumovies.net/search/label/" + c + "?max-results=1000").
+      get.select(".post-body.entry-content").foldLeft(new HashMap[String, String]) { (r, element) =>
+        val link = element.select("a").first
+        r.put(link.text, link.attr("href"))
+        r
+      }
   }
 }
 
